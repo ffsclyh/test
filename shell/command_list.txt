@@ -2,4 +2,9 @@ ps -ef -u ec2-user|grep docker|awk '{print $2}' |sort >temp.txt
 
 chmod u+x example1 
 
+
+sed -i 's/word1/word2/g' file1
+
 sed –n '5,$p' file1|sed '/MNO/s/ABC/DEF/' 
+
+watch -n2 ls 
