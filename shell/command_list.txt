@@ -7,3 +7,14 @@ sed -i 's/word1/word2/g' file1
 
 
 kubectl get all
+
+
+
+
+export AWS_ASSUME_ROLE_ARN="arn:aws:iam::888888888888:role/TestRole"
+export AWS_REGION="us-east-2"
+export PROFILE_NAME="test"
+read AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN <<< $(aws sts assume-role --role-arn "$AWS_ASSUME_ROLE_ARN" --role-session-name "$PROFILE_NAME" --region "$AWS_REGION"  --duration-seconds 3600 --output text | awk '/^CREDENTIALS/ { print $2, $4, $5 }')
+
+aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile "$PROFILE_NAME" && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile "$PROFILE_NAME" && aws configure set aws_session_token $AWS_SESSION_TOKEN --profile "$PROFILE_NAME"
+aws sts get-caller-identity --profile $PROFILE_NAME
